@@ -21,7 +21,8 @@ for dicti, direc in [
 		for name in files:
 			if name.endswith('.svg') or name.endswith('.png'):
 				if not key(root) == 256:
-					dicti[name[:-4]].append(os.path.join(root, name))
+					path = os.path.relpath(os.path.realpath(os.path.join(root, name)), os.getcwd())
+					dicti[name[:-4]].append(path)
 					dicti[name[:-4]].sort(key=key)
 
 r = requests.get('http://standards.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html', stream=True)
