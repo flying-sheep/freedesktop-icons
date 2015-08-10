@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 iconsets = [
 	('Breeze',  defaultdict(list), 'plasma-next-icons/Breeze'),
 	('Adwaita', defaultdict(list), 'adwaita-icon-theme/Adwaita'),
+	('Adwaita-symbolic', defaultdict(list), 'adwaita-icon-theme/Adwaita'),
 ]
 
 def key(d):
@@ -17,14 +18,27 @@ def key(d):
 	else:
 		return d
 
-for name, icons, direc in iconsets:
+sym_re = re.compile(r'([\w+-]+)-symbolic((?:-rtl)?)\.\w+')
+
+for set_name, icons, direc in iconsets:
 	for root, dirs, files in os.walk(direc):
 		for name in files:
-			if name.endswith('.svg') or name.endswith('.png'):
-				if not key(root) == 256:
-					path = os.path.relpath(os.path.realpath(os.path.join(root, name)), os.getcwd())
-					icons[name[:-4]].append(path)
-					icons[name[:-4]].sort(key=key)
+			if not (name.endswith('.svg') or name.endswith('.png')):
+				continue
+			if key(root) == 256:
+				continue
+			sym_match = sym_re.fullmatch(name)
+			if set_name.endswith('-symbolic') != bool(sym_match):
+				continue
+			
+			if sym_match is not None:
+				sname = ''.join(sym_match.group(1, 2))
+			else:
+				sname = name[:-len('.svg')]
+			
+			path = os.path.relpath(os.path.realpath(os.path.join(root, name)), os.getcwd())
+			icons[sname].append(path)
+			icons[sname].sort(key=key)
 
 r = requests.get('http://standards.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html', stream=True)
 soup = BeautifulSoup(r.raw, 'html5lib')
