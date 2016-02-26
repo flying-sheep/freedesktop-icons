@@ -1,6 +1,6 @@
-[submodule "plasma-next-icons"]
-	path = plasma-next-icons
-	url = https://github.com/NitruxSA/plasma-next-icons.git
 [submodule "adwaita-icon-theme"]
 	path = adwaita-icon-theme
 	url = https://github.com/GNOME/adwaita-icon-theme.git
+[submodule "breeze-icons"]
+	path = breeze-icons
+	url = git://anongit.kde.org/breeze-icons.git

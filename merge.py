@@ -8,7 +8,7 @@ from collections import defaultdict
 from bs4 import BeautifulSoup
 
 iconsets = [
-	('Breeze',  defaultdict(list), 'plasma-next-icons/Breeze'),
+	('Breeze',  defaultdict(list), 'breeze-icons/icons'),
 	('Adwaita', defaultdict(list), 'adwaita-icon-theme/Adwaita'),
 	('Adwaita-symbolic', defaultdict(list), 'adwaita-icon-theme/Adwaita'),
 ]
