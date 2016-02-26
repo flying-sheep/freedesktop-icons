@@ -3,4 +3,4 @@
 	url = https://github.com/GNOME/adwaita-icon-theme.git
 [submodule "breeze-icons"]
 	path = breeze-icons
-	url = git://anongit.kde.org/breeze-icons.git
+	url = https://anongit.kde.org/breeze-icons.git
