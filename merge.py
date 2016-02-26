@@ -3,7 +3,7 @@
 import os, re
 from functools import reduce
 
-import requests
+from urllib.request import urlopen
 from collections import defaultdict
 from bs4 import BeautifulSoup
 
@@ -42,8 +42,8 @@ for set_name, icons, direc in iconsets:
 			icons[sname].append(path)
 			icons[sname].sort(key=key)
 
-r = requests.get('http://standards.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html', stream=True)
-soup = BeautifulSoup(r.raw, 'html5lib')
+with urlopen('http://standards.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html') as r:
+	soup = BeautifulSoup(r, 'html5lib')
 
 standard_icons = set()
 for table in soup.find_all('table'):
