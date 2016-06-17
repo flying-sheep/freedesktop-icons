@@ -45,6 +45,17 @@ for set_name, icons, direc in iconsets:
 with urlopen('http://standards.freedesktop.org/icon-naming-spec/icon-naming-spec-latest.html') as r:
 	soup = BeautifulSoup(r, 'html5lib')
 
+def preprend_icon_cell(tr, icon_name):
+	for _, iconset, _ in iconsets:
+		td = soup.new_tag('td')
+		for i in iconset[icon_name]:
+			img = soup.new_tag('img', src=i)
+			size = re.search(r'/(\d+)/', i)
+			if size:
+				img['width'] = img['height'] = size.group(1)
+			td.append(img)
+		tr.insert(0, td)
+
 standard_icons = set()
 for table in soup.find_all('table'):
 	for name, _, _ in iconsets:
@@ -57,13 +68,7 @@ for table in soup.find_all('table'):
 	for row in table.tbody.find_all('tr'):
 		icon = row.td.string
 		standard_icons.add(icon)
-		
-		for _, icons, _ in iconsets:
-			td  = soup.new_tag('td')
-			for i in icons[icon]:
-				td.append(soup.new_tag('img', src=i))
-			
-			row.insert(0, td)
+		preprend_icon_cells(row, icon)
 
 nonstandard_icons = set()
 for _, urls, _ in iconsets:
@@ -76,11 +81,7 @@ soup.append(h2)
 t = soup.new_tag('table')
 for icon in sorted(nonstandard_icons):
 	tr = soup.new_tag('tr')
-	for _, iconset, _ in iconsets:
-		td = soup.new_tag('td')
-		for i in iconset[icon]:
-			td.append(soup.new_tag('img', src=i))
-		tr.insert(0, td)
+	preprend_icon_cells(tr, icon)
 	
 	td = soup.new_tag('td')
 	td.string = icon
